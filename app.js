@@ -11,16 +11,16 @@ const Authrouter = require("./routes/user");
 
 // dbcoonection
 mongoose
-  .connect("mongodb://localhost:27017/attendence", {
+  .connect(process.env.MONGODB_ATLAS, {
     useNewUrlParser: true,
-    useCreateIndex: true,
     useUnifiedTopology: true,
     family: 4,
   })
   .then(() => console.log("db is connected "))
-  .catch(() => console.log("db is not connected"));
+  .catch((err) => console.log("db is not connected", err));
 
 // middlewares
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
