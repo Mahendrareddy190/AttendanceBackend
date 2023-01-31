@@ -17,7 +17,7 @@ mongoose
     family: 4,
   })
   .then(() => console.log("db is connected "))
-  .catch((err) => console.log("db is not connected", err));
+  .catch(() => console.log("db is not connected"));
 
 // middlewares
 app.use(express.json());
