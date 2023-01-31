@@ -7,12 +7,12 @@ const {
   userids,
   getss,
   getTokenFromUser,
-  verifyUserEmail,
+  // verifyUserEmail,
 } = require("../controlls/user");
 const { check, validationResult } = require("express-validator");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
-router.get("/confirmation/:token", verifyUserEmail);
+// router.get("/confirmation/:token", verifyUserEmail);
 
 router.param("token", getTokenFromUser);
 
@@ -33,47 +33,42 @@ router.post("/signin", (req, res, next) => {
       })
       .then((user) => {
         if (!user) {
-          return res.status(401).json({
+          return res.status(200).json({
             error: "auth fail",
           });
-        }
-        getUser = user;
+        } else {
+          getUser = user;
 
-        if (getUser.verify === false) {
-          return res.status(400).json({
-            error: "plsease, verify your email before login",
-          });
+          // if (getUser.verify === false) {
+          //   return res.status(200).json({
+          //     error: "plsease, verify your email before login",
+          //   });
+          // }
+          return bcrypt.compare(req.body.password, user.password);
         }
-        return bcrypt.compare(req.body.password, user.password);
       })
       .then((response) => {
-        if (!response) {
-          return res.status(401).json({ error: "failed" });
+        if (response === false) {
+          return res.status(200).json({ error: "password not mached" });
         }
-        let jwtToken = jwt.sign(
-          {
-            email: getUser.email,
-            userId: getUser._id,
-          },
+        if (response === true) {
+          let jwtToken = jwt.sign(
+            {
+              email: getUser.email,
+              userId: getUser._id,
+            },
 
-          "longer-secret-is-better",
-          {
-            expiresIn: "1h",
-          }
-        );
-
-        res
-          .status(200)
-          .json({
+            "longer-secret-is-better",
+            {
+              expiresIn: "1h",
+            }
+          );
+          res.status(200).json({
             token: jwtToken,
             expiresIn: 3600,
             msg: getUser,
-          })
-          .catch((err) => {
-            return res.status(401).json({
-              error: "failed..",
-            });
           });
+        }
       });
 });
 
@@ -96,52 +91,52 @@ router.post("/signup", (req, res, next) => {
       });
 
       user.save((err, user) => {
-        if (err && !res) {
-          return err.status(400).json({
+        if (err || !user) {
+          return res.status(400).json({
             error: "Not able to save user in the DB",
           });
         } else {
           res.json({ message: "successfully saved" });
         }
-        const email = req.body.email;
-        let transpoter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: "perammahendra60@gmail.com",
-            pass: "mahimahi11111",
-          },
-        });
+        // const email = req.body.email;
+        // let transpoter = nodemailer.createTransport({
+        //   service: "gmail",
+        //   auth: {
+        //     user: "perammahendra60@gmail.com",
+        //     pass: "mahimahi11111",
+        //   },
+        // });
 
-        const emailToken = jwt.sign(
-          {
-            _id: user._id,
-          },
-          process.env.ACTIVATION,
-          {
-            expiresIn: "20m",
-          }
-        );
+        // const emailToken = jwt.sign(
+        //   {
+        //     _id: user._id,
+        //   },
+        //   process.env.ACTIVATION,
+        //   {
+        //     expiresIn: "20m",
+        //   }
+        // );
 
-        const url = `https://attendance-pro.herokuapp.com/api/confirmation/${emailToken}`;
+        // const url = `https://attendance-pro.herokuapp.com/api/confirmation/${emailToken}`;
 
-        transpoter.sendMail(
-          {
-            from: "perammahendra60@gmail.com",
-            to: email,
-            subject: "Attendence signin confirmation",
-            html: `Please, click this link to confirm your email:<a href="${url}">${url}</a>`,
-          },
-          (err, res) => {
-            if (err) {
-            }
-            res.json({
-              name: user.name,
-              email: user.email,
-              id: user._id,
-              message: "Email sent successfully",
-            });
-          }
-        );
+        // transpoter.sendMail(
+        //   {
+        //     from: "perammahendra60@gmail.com",
+        //     to: email,
+        //     subject: "Attendence signin confirmation",
+        //     html: `Please, click this link to confirm your email:<a href="${url}">${url}</a>`,
+        //   },
+        //   (err, res) => {
+        //     if (err) {
+        //     }
+        //     res.json({
+        //       name: user.name,
+        //       email: user.email,
+        //       id: user._id,
+        //       message: "Email sent successfully",
+        //     });
+        //   }
+        // );
       });
     });
 });

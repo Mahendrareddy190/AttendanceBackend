@@ -1,4 +1,3 @@
-const { verify } = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const uniquevALIDATOR = require("mongoose-unique-validator");
 const userSchema = new mongoose.Schema(
@@ -16,17 +15,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    verify:{
-        type:Boolean,
-        default: true,
-    }
+    verify: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     collection: "users",
-  },
-  
+  }
 );
 
-userSchema.plugin(uniquevALIDATOR, { message: "email alread exisits" });
+userSchema.plugin(uniquevALIDATOR, { message: "email already exisits" });
 
 module.exports = mongoose.model("User", userSchema);

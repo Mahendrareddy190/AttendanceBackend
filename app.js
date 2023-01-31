@@ -11,14 +11,12 @@ const Authrouter = require("./routes/user");
 
 // dbcoonection
 mongoose
-  .connect(
-    "mongodb+srv://mahi:QLPQWzST52VmDbcr@cluster0.tqx4r.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect("mongodb://localhost:27017/attendence", {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    family: 4,
+  })
   .then(() => console.log("db is connected "))
   .catch(() => console.log("db is not connected"));
 
