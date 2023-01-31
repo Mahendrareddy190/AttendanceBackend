@@ -3,7 +3,7 @@ const Attendence = require("../models/attendence");
 exports.attendence = (req, res, next, Id) => {
   Attendence.findById(Id).exec((err, atten) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant save into data base ",
       });
     }
@@ -17,7 +17,7 @@ exports.match = (req, res) => {
   let mahi = Attenden.value.date;
   Attendence.findOne({ date: mahi ,userId:req.userSchema._id},).exec((err, result) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant get attendence",
       });
     } else {
@@ -47,7 +47,7 @@ exports.addAttendence = (req, res) => {
   attend.save((err, attende) => {
     if (err) {
       console.log(err);
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant  crate into data base ",
       });
     }
@@ -58,7 +58,7 @@ exports.addAttendence = (req, res) => {
 exports.AllAttendence = (req, res) => {
   Attendence.find({userId:req.userSchema._id}).exec((err, atten) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: " cant get all ",
       });
     }
@@ -74,7 +74,7 @@ exports.deleteAttendence = (req, res) => {
   let att = req.Attendence;
   att.remove((err, student) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant delete Attendence",
       });
     }

@@ -3,7 +3,7 @@ const Student = require("../models/student_list");
 exports.getStudentId = (req, res, next, Id) => {
   Student.findById(Id).exec((err, stude) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant save into database",
       });
     }
@@ -24,7 +24,7 @@ exports.createStudent = (req, res) => {
   });
   stu.save((err, student) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "can`t save into database",
       });
     }
@@ -39,7 +39,7 @@ exports.getStudent = (req, res) => {
 exports.getallstudent = (req, res) => {
   Student.find({ userId: req.userSchema._id }).exec((err, student) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant get student by id",
       });
     }
@@ -51,7 +51,7 @@ exports.deleteStudent = (req, res) => {
   let stud = req.Student;
   stud.remove((err, student) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         error: "cant delete student",
       });
     }

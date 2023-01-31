@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 exports.userids = (req, res, next, Id) => {
   userSchema.findById(Id).exec((err, use) => {
     if (err || !use) {
-      return res.status(400).json({ message: "cant save in to database" });
+      return res.status(200).json({ message: "cant save in to database" });
     }
     req.userSchema = use;
     next();
@@ -38,7 +38,7 @@ exports.getTokenFromUser = (req, res, next, token) => {
     .findById(
       jwt.verify(token, process.env.ACTIVATION, (err, info) => {
         if (err) {
-          return res.status(400).json({
+          return res.status(200).json({
             error: "invalid token",
           });
         }
@@ -47,7 +47,7 @@ exports.getTokenFromUser = (req, res, next, token) => {
     )
     .exec((err, user) => {
       if (err || !user) {
-        return res.status(400).json({
+        return res.status(200).json({
           error: "plsease ,signup first!",
         });
       }

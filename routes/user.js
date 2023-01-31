@@ -92,7 +92,8 @@ router.post("/signup", (req, res, next) => {
 
       user.save((err, user) => {
         if (err || !user) {
-          return res.status(400).json({
+          console.log(err);
+          return res.status(200).json({
             error: "Not able to save user in the DB",
           });
         } else {
@@ -144,7 +145,7 @@ router.post("/signup", (req, res, next) => {
 router.get("/gets", (req, res) => {
   userSchema.find().exec((err, users) => {
     if (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         message: "cant get user",
       });
     }
