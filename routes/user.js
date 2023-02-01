@@ -92,7 +92,6 @@ router.post("/signup", (req, res, next) => {
 
       user.save((err, user) => {
         if (err || !user) {
-          console.log(err);
           return res.status(200).json({
             error: "Not able to save user in the DB",
           });

@@ -15,7 +15,6 @@ exports.getStudentId = (req, res, next, Id) => {
 
 exports.createStudent = (req, res) => {
   let userId = req.userSchema._id;
-  console.log(userId);
   let stu = new Student({
     name: req.body.name,
     rollno: req.body.rollno,
